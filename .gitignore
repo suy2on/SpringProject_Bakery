@@ -30,8 +30,8 @@ build/
 !**/src/test/**/build/
 
 
-# Created by https://www.toptal.com/developers/gitignore/api/intellij,jetbrains,java
-# Edit at https://www.toptal.com/developers/gitignore?templates=intellij,jetbrains,java
+# Created by https://www.toptal.com/developers/gitignore/api/java,intellij,jetbrains
+# Edit at https://www.toptal.com/developers/gitignore?templates=java,intellij,jetbrains
 
 ### Intellij ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
@@ -240,4 +240,4 @@ replay_pid*
 # CodeStream plugin
 # https://plugins.jetbrains.com/plugin/12206-codestream
 
-# End of https://www.toptal.com/developers/gitignore/api/intellij,jetbrains,java
+# End of https://www.toptal.com/developers/gitignore/api/java,intellij,jetbrains
