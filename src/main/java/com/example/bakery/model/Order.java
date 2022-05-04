@@ -9,7 +9,7 @@ public class Order {
     private final UUID orderId;
     private final List<OrderItem> orderItems;
     private String phoneNumber;
-    private String Address;
+    private String address;
     private long price;
     private OrderStatus orderStatus;
     private final LocalDateTime createdAt;
@@ -20,7 +20,7 @@ public class Order {
             this.orderId = UUID.randomUUID();
             this.orderItems = orderItems;
             this.phoneNumber = phoneNumber;
-            Address = address;
+            this.address = address;
             this.price = price;
             this.orderStatus = OrderStatus.APPROVED;
             this.createdAt = LocalDateTime.now();
@@ -35,7 +35,7 @@ public class Order {
             this.orderId = orderId;
             this.orderItems = orderItems;
             this.phoneNumber = phoneNumber;
-            Address = address;
+            this.address = address;
             this.price = price;
             this.orderStatus = orderStatus;
             this.createdAt = createdAt;
@@ -60,7 +60,7 @@ public class Order {
     }
 
     public String getAddress() {
-        return Address;
+        return address;
     }
 
     public long getPrice() {

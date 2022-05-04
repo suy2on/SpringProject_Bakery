@@ -4,24 +4,24 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class OrderItem {
-    private final UUID orderItemId;
+    private final UUID orderId;
     private final UUID productId;
     private final int count;
     private final int price;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public OrderItem(UUID productId, int count, int price) {
-        this.orderItemId = UUID.randomUUID();
+    public OrderItem(UUID orderId,UUID productId, int count, int price) {
+        this.orderId = orderId;
         this.productId = productId;
         this.count = count;
         this.price = price;
         this.createdAt = LocalDateTime.now();
     }
 
-    public OrderItem(UUID orderItemId, UUID productId, int count, int price, LocalDateTime createdAt,
+    public OrderItem(UUID orderId, UUID productId, int count, int price, LocalDateTime createdAt,
         LocalDateTime updatedAt) {
-        this.orderItemId = orderItemId;
+        this.orderId = orderId;
         this.productId = productId;
         this.count = count;
         this.price = price;
@@ -31,8 +31,8 @@ public class OrderItem {
 
     // getter
 
-    public UUID getOrderItemId() {
-        return orderItemId;
+    public UUID getOrderId() {
+        return orderId;
     }
 
     public UUID getProductId() {

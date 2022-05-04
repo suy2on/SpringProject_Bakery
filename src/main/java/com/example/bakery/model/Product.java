@@ -11,9 +11,11 @@ public class Product {
     private static final Logger logger = LoggerFactory.getLogger(Product.class);
 
     private final UUID productId;
+    private String productName;
     private ProductCategory productCategory;
     private int price;
     private int stock;
+    private String description;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -22,25 +24,29 @@ public class Product {
     private static final int MAX_STOCK = 500;
     private static final int MIN_STOCK = 0;
 
-    public Product(ProductCategory productCategory, Integer price, Integer stock) {
+    public Product(String productName, ProductCategory productCategory, int price, int stock, String description) {
         if(isValidPrice(price) && isValidStock(stock)) {
             this.productId = UUID.randomUUID();
+            this.productName = productName;
             this.productCategory = productCategory;
             this.price = price;
             this.stock = stock;
+            this.description = description;
             this.createdAt = LocalDateTime.now();
         } else{
             throw new RuntimeException("Invalid stock or price");
         }
     }
 
-    public Product(UUID productId, ProductCategory productCategory, Integer price,
-        Integer stock, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Product(UUID productId, String productName, ProductCategory productCategory, int price,
+        int stock, String description, LocalDateTime createdAt, LocalDateTime updatedAt) {
         if(isValidPrice(price) && isValidStock(stock)) {
             this.productId = productId;
+            this.productName = productName;
             this.productCategory = productCategory;
             this.price = price;
             this.stock = stock;
+            this.description = description;
             this.createdAt = createdAt;
             this.updatedAt = updatedAt;
         } else{
@@ -58,12 +64,20 @@ public class Product {
         return productCategory;
     }
 
-    public Integer getPrice() {
+    public String getProductName() {
+        return productName;
+    }
+
+    public int getPrice() {
         return price;
     }
 
-    public Integer getStock() {
+    public int getStock() {
         return stock;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -72,6 +86,11 @@ public class Product {
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+        this.updatedAt = LocalDateTime.now();
     }
 
     public boolean isValidPrice(int price){
