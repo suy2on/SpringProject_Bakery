@@ -1,5 +1,6 @@
 package com.example.bakery.model;
 
+import com.example.bakery.exception.ValueOutOfRangeException;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import org.slf4j.Logger;
@@ -24,8 +25,12 @@ public class Product {
     private static final int MAX_STOCK = 500;
     private static final int MIN_STOCK = 0;
 
-    public Product(String productName, ProductCategory productCategory, int price, int stock, String description) {
-        if(isValidPrice(price) && isValidStock(stock)) {
+    public Product(String productName, ProductCategory productCategory, int price, int stock, String description) throws ValueOutOfRangeException{
+        if(!isValidPrice(price)) {
+            throw new ValueOutOfRangeException("Invalid price");
+        } else if(!isValidStock(stock)) {
+            throw new ValueOutOfRangeException("Invalid stock");
+        } else{
             this.productId = UUID.randomUUID();
             this.productName = productName;
             this.productCategory = productCategory;
@@ -33,14 +38,16 @@ public class Product {
             this.stock = stock;
             this.description = description;
             this.createdAt = LocalDateTime.now();
-        } else{
-            throw new RuntimeException("Invalid stock or price");
         }
     }
 
     public Product(UUID productId, String productName, ProductCategory productCategory, int price,
-        int stock, String description, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        if(isValidPrice(price) && isValidStock(stock)) {
+        int stock, String description, LocalDateTime createdAt, LocalDateTime updatedAt) throws ValueOutOfRangeException{
+        if(!isValidPrice(price)) {
+            throw new ValueOutOfRangeException("Invalid price");
+        } else if(!isValidStock(stock)) {
+            throw new ValueOutOfRangeException("Invalid stock");
+        } else{
             this.productId = productId;
             this.productName = productName;
             this.productCategory = productCategory;
@@ -49,8 +56,6 @@ public class Product {
             this.description = description;
             this.createdAt = createdAt;
             this.updatedAt = updatedAt;
-        } else{
-            throw new RuntimeException("Invalid stock or price");
         }
     }
 
@@ -93,7 +98,7 @@ public class Product {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public boolean isValidPrice(int price){
+    private boolean isValidPrice(int price){
         if(price>MAX_PRICE){
             logger.error("Product price cannot exceed 1,000,000won.");
             return false;
@@ -105,7 +110,7 @@ public class Product {
         }
     }
 
-    public boolean isValidStock(int stock) {
+    private boolean isValidStock(int stock) {
         if (stock > MAX_STOCK) {
             logger.error("Product stock cannot exceed 500.");
             return false;
