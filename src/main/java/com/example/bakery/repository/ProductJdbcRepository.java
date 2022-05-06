@@ -5,6 +5,7 @@ import static com.example.bakery.Utils.toUUID;
 
 import com.example.bakery.model.Product;
 import com.example.bakery.model.ProductCategory;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
@@ -41,10 +42,10 @@ public class ProductJdbcRepository implements ProductRepository {
 
     @Override
     public Optional<Product> findById(UUID productId) {
-        String sql = "select * from product where product_id = :productId";
+        String sql = "select * from product where product_id = UUID_TO_BIN(:productId)";
         try {
             return Optional.ofNullable(jdbcTemplate
-                .queryForObject(sql, Collections.singletonMap("productId", productId),
+                .queryForObject(sql, Collections.singletonMap("productId", productId.toString().getBytes()),
                     productRowMapper));
         } catch (EmptyResultDataAccessException e){
             logger.error("There is no data matching the ID : ", e);
@@ -63,8 +64,8 @@ public class ProductJdbcRepository implements ProductRepository {
 
     @Override
     public Product insert(Product product) {
-        String sql = "insert product(product_id, name, product_category, price, stock, description, created_at, updated_at"
-            + "values(:productId, :productName, :category, :price, :stock, :description, :createdAt, :updatedAt";
+        String sql = "insert into product(product_id, name, product_category, price, stock, description, created_at, updated_at) "
+            + "values(UUID_TO_BIN(:productId), :productName, :category, :price, :stock, :description, :createdAt, :updatedAt)";
 
         try {
             int insert = jdbcTemplate.update(sql, productParamsMap(product));
@@ -80,10 +81,12 @@ public class ProductJdbcRepository implements ProductRepository {
 
     @Override
     public Product update(Product product) {
-        String sql = "update product set name = :productName, product_category = :category, price = :price, stock = :stock, description = :description "
+        String sql = "update product set name = :productName, product_category = :category, price = :price, stock = :stock, description = :description, "
             + "created_at = :createdAt, updated_at = :updatedAt where product_id = UUID_TO_BIN(:productId)" ;
         try {
             int update = jdbcTemplate.update(sql, productParamsMap(product));
+            if (update != 1)
+                logger.error("Got error during update product");
         } catch (DataAccessException e){
             logger.error("Got error during update product : " ,e);
             throw e;
@@ -95,14 +98,21 @@ public class ProductJdbcRepository implements ProductRepository {
     @Override
     public UUID deleteById(UUID productId) {
         String sql = "delete from product where product_id = UUID_TO_BIN(:productId)";
-        jdbcTemplate.update(sql, Collections.singletonMap("productId", productId));
+        jdbcTemplate.update(sql, Collections.singletonMap("productId", productId.toString().getBytes()));
         return productId;
+    }
+
+    @Override
+    public int deleteAllProduct(){
+        String sql = "delete from product";
+        int delete = jdbcTemplate.update(sql, Collections.emptyMap());
+        return delete;
     }
 
 
     private static final RowMapper<Product> productRowMapper = (rs, rowNum) -> {
         UUID productId = toUUID(rs.getBytes("product_id"));
-        String productName = rs.getString("product_name");
+        String productName = rs.getString("name");
         ProductCategory productCategory = ProductCategory.valueOf(rs.getString("product_category"));
         int price = rs.getInt("price");
         int stock = rs.getInt("stock");

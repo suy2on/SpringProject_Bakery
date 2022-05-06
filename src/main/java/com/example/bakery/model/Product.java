@@ -93,9 +93,23 @@ public class Product {
         return updatedAt;
     }
 
+
+
     public void setDescription(String description) {
         this.description = description;
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public void setProductCategory(ProductCategory productCategory) {
+        this.productCategory = productCategory;
+        this.updatedAt = LocalDateTime.now();
+
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+        this.updatedAt = LocalDateTime.now();
+
     }
 
     private boolean isValidPrice(int price){
