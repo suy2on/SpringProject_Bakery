@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public class Order {
     private final UUID orderId;
-    private final List<OrderItem> orderItems;
+    private List<OrderItem> orderItems;
     private String phoneNumber;
     private String address;
     private long price;
@@ -87,7 +87,12 @@ public class Order {
         this.updatedAt = LocalDateTime.now();
     }
 
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
+
     public boolean isValidPhoneNumber(String number){
-        return Pattern.matches("/^\\d{3}-\\d{3,4}-\\d{4}$/", number);
+        return Pattern.matches("\\d{3}-\\d{4}-\\d{4}", number);
+
     }
 }
