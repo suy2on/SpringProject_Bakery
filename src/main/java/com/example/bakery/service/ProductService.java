@@ -21,77 +21,34 @@ public class ProductService {
 
     public ProductResponseDto createProduct(ProductRequestDto productRequestDto) {
         Product product = productRepository.insert(productRequestDto.toEntity());
-        ProductResponseDto productResponseDto = new ProductResponseDto(
-                product.getProductId(),
-                product.getProductName(),
-                product.getProductCategory(),
-                product.getPrice(),
-                product.getStock(),
-                product.getDescription(),
-                product.getCreatedAt(),
-                product.getUpdatedAt());
-
-        return productResponseDto;
+        return new ProductResponseDto(product);
     }
 
     public List<ProductResponseDto> getAllProduct() {
         return productRepository.getAllProduct()
             .stream()
-            .map(product -> {
-                return new ProductResponseDto(
-                    product.getProductId(),
-                    product.getProductName(),
-                    product.getProductCategory(),
-                    product.getPrice(),
-                    product.getStock(),
-                    product.getDescription(),
-                    product.getCreatedAt(),
-                    product.getUpdatedAt());
-            })
+            .map(ProductResponseDto::new)
             .collect(Collectors.toList());
     }
 
     public ProductResponseDto findProductById(UUID productId) {
         Product product = productRepository.findById(productId).orElseThrow(ProductNotFoundException::new);
-        return new ProductResponseDto(
-            product.getProductId(),
-            product.getProductName(),
-            product.getProductCategory(),
-            product.getPrice(),
-            product.getStock(),
-            product.getDescription(),
-            product.getCreatedAt(),
-            product.getUpdatedAt());
+        return new ProductResponseDto(product);
+
     }
 
     public List<ProductResponseDto> findProductByCategory(ProductCategory productCategory){
         return productRepository.findByCategory(productCategory)
             .stream()
-            .map(product -> {
-                return new ProductResponseDto(
-                    product.getProductId(),
-                    product.getProductName(),
-                    product.getProductCategory(),
-                    product.getPrice(),
-                    product.getStock(),
-                    product.getDescription(),
-                    product.getCreatedAt(),
-                    product.getUpdatedAt());
-            })
+            .map(ProductResponseDto::new)
             .collect(Collectors.toList());
     }
 
+
+    // TODO : Update Date 바뀌도록 로직 수정
     public ProductResponseDto updateProduct(ProductRequestDto productRequestDto){
         Product product = productRepository.update(productRequestDto.toEntity());
-        return new ProductResponseDto(
-            product.getProductId(),
-            product.getProductName(),
-            product.getProductCategory(),
-            product.getPrice(),
-            product.getStock(),
-            product.getDescription(),
-            product.getCreatedAt(),
-            product.getUpdatedAt());
+        return new ProductResponseDto(product);
     }
 
     public UUID deleteProductById(UUID productId){
