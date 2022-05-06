@@ -10,7 +10,11 @@ import java.util.UUID;
 
 public interface OrderRepository {
 
+    List<Order> getAllOrder();
+
     Order insert(Order order);
+
+    int deleteAllOrder();
 
 
 }
