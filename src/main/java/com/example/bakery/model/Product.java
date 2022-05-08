@@ -106,9 +106,13 @@ public class Product {
 
     }
 
-    public void setStock(int stock) {
-        this.stock = stock;
-        this.updatedAt = LocalDateTime.now();
+    public void setStock(int stock) throws ValueOutOfRangeException {
+        if(isValidStock(stock)) {
+            this.stock = stock;
+            this.updatedAt = LocalDateTime.now();
+        } else {
+            throw new ValueOutOfRangeException("Invalid stock");
+        }
 
     }
 
