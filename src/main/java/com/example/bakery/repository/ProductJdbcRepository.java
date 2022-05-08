@@ -3,6 +3,7 @@ package com.example.bakery.repository;
 import static com.example.bakery.Utils.toLocalDateTime;
 import static com.example.bakery.Utils.toUUID;
 
+import com.example.bakery.exception.ProductNotFoundException;
 import com.example.bakery.model.Product;
 import com.example.bakery.model.ProductCategory;
 import java.nio.charset.StandardCharsets;
@@ -48,8 +49,8 @@ public class ProductJdbcRepository implements ProductRepository {
                 .queryForObject(sql, Collections.singletonMap("productId", productId.toString().getBytes()),
                     productRowMapper));
         } catch (EmptyResultDataAccessException e){
-            logger.error("There is no data matching the ID : ", e);
-            throw e;
+            logger.error("There is no data matching the ID : ", productId);
+            throw new ProductNotFoundException("There is no data matching with the ID");
         }catch (IncorrectResultSizeDataAccessException e){
             logger.error("An error occurred while finding product by Id : ", e);
             throw e;
